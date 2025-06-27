@@ -46,3 +46,11 @@ These can be installed with the command `pip install '.[dev]'`.
 
 A series of checks are conducted in our CI pipeline, which must pass 
 before your pull request is considered ready for review.
+To prepare a development environment with all optional features run:
+    pip install -e .[dev,chem,ams,analysis]
+
+Some tests require AMS to be available; ensure the AMSHOME environment variable is set to your installation.
+
+You can then execute the unit tests with:
+
+    pytest
