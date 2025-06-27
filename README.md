@@ -106,3 +106,12 @@ Contributing
 ------------
 
 Contributions are welcome. See [CONTRIBUTING.md](https://github.com/SCM-NV/PLAMS/blob/trunk/CONTRIBUTING.md) for details.
+Developer setup and testing
+---------------------------
+To run the unit tests locally, install PLAMS in editable mode with all optional dependencies:
+    pip install -e .[dev,chem,ams,analysis]
+
+AMS-based tests require the AMSHOME environment variable to point to your AMS installation. After installation, run tests with:
+
+    pytest
+
