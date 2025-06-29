@@ -1780,3 +1780,17 @@ License file: ./license.txt"""
         # Error in prerun
         job._error_msg = "RuntimeError: something went wrong"
         assert job.get_errormsg() == "RuntimeError: something went wrong"
+
+
+def test_get_input_raises_on_duplicate_engine_blocks():
+    settings = Settings()
+    settings.input.ams.Task = "SinglePoint"
+    block1 = Settings()
+    block2 = Settings()
+    settings.input.adf = [block1, block2]
+    mol = Molecule()
+    mol.add_atom(Atom(symbol="H", coords=(0, 0, 0)))
+    job = AMSJob(molecule=mol, settings=settings)
+
+    with pytest.raises(ValueError, match="duplicate Engine block for adf"):
+        job.get_input()

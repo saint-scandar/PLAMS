@@ -3061,6 +3061,33 @@ class AMSJob(SingleJob):
                 txtinp += system_block
 
             # and then engines
+            engine_counts: Dict[str, int] = {}
+            engine_original: Dict[str, str] = {}
+            for eng_key in input_settings:
+                if eng_key == ams:
+                    continue
+                eng_val = input_settings[eng_key]
+                if isinstance(eng_key, str) and eng_key.startswith("_"):
+                    if isinstance(eng_val, Settings) and "_h" in eng_val:
+                        header = str(eng_val["_h"])
+                        if header.lower().startswith("engine"):
+                            eng_name = header.split(None, 1)[1] if len(header.split(None, 1)) > 1 else header[6:]
+                        else:
+                            continue
+                    else:
+                        continue
+                else:
+                    eng_name = str(eng_key)
+
+                count = len(eng_val) if isinstance(eng_val, list) else 1
+                key_lc = eng_name.lower()
+                engine_original.setdefault(key_lc, eng_name)
+                engine_counts[key_lc] = engine_counts.get(key_lc, 0) + count
+
+            duplicate = next((engine_original[k] for k, c in engine_counts.items() if c > 1), None)
+            if duplicate:
+                raise ValueError(f"duplicate Engine block for {duplicate}")
+
             for engine in input_settings:
                 if engine != ams:
                     txtinp += "\n" + serialize("Engine " + engine, input_settings[engine], 0, end="EndEngine") + "\n"

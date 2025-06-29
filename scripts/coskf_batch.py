@@ -220,15 +220,16 @@ if __name__ == "__main__":
     workdir_root.mkdir(parents=True, exist_ok=True)
     coskf_dir.mkdir(parents=True, exist_ok=True)
 
-    for raw in open(args.smiles_file):
-        line = raw.strip()
-        if not line or line.startswith("#"):
-            continue
-        parts = line.split(None, 1)
-        smiles = parts[0]
-        name = (parts[1] if len(parts) > 1 else smiles).replace(" ", "_")
-        init(path=str(workdir_root), folder=name)
-        try:
-            process_molecule(smiles, name, args.nconfs)
-        finally:
-            finish()
+    with open(args.smiles_file) as fh:
+        for raw in fh:
+            line = raw.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split(None, 1)
+            smiles = parts[0]
+            name = (parts[1] if len(parts) > 1 else smiles).replace(" ", "_")
+            init(path=str(workdir_root), folder=name)
+            try:
+                process_molecule(smiles, name, args.nconfs)
+            finally:
+                finish()
