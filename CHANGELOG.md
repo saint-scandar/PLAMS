@@ -23,6 +23,11 @@ This changelog is effective from the 2025 releases.
 ### Changed
 * `JobAnalysis` returns an updated copy on modification instead of performing the operation in-place
 
+## 2025.103
+
+### Fixed
+* `SingleJob.load`, `JobManager.load_job` and `load` can load jobs from a `.dill` file from PLAMS<2025
+
 ## 2025.102
 
 ## 2025.101
